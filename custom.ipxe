@@ -1,12 +1,12 @@
 #!ipxe
-###
-### netboot.xyz-custom menu
-###
 
-:start
-echo Hello world!
-sleep 10
-goto custom_exit
+menu Custom Network Boot Menu
+item --gap --           ----------------------
+item unattended-ubuntu  Install Ubuntu 24.04.1 LTS (Unattended)
 
-:custom_exit
-exit 0
+choose --default unattended-ubuntu --timeout 5000 target && goto ${target}
+
+:unattended-ubuntu
+kernel http://archive.ubuntu.com/ubuntu/dists/lunar/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/linux auto=true priority=critical vga=788 url=http://192.168.1.20:15001/unattended-virtual.seed interface=auto
+initrd http://archive.ubuntu.com/ubuntu/dists/lunar/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/initrd.gz
+boot
